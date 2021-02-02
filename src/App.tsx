@@ -10,12 +10,10 @@ import {type} from "os";
 
 type AppPropsType = {
     state: RootStateType
-    dispatch:(action: ActionsTypes) => void
+    dispatch: (action: ActionsTypes) => void
 }
 
 function App(props: AppPropsType) {
-    // let dialogs = state.dialogsPage
-    // let posts = state.profilePage
     return (
         <BrowserRouter>
             <div className="app-wrapper">
@@ -25,8 +23,10 @@ function App(props: AppPropsType) {
                     <Route exact path={"/dialogs"}
                            render={() =>
                                <Dialogs
+                                   dispatch={props.dispatch}
                                    dialogs={props.state.dialogsPage.dialogs}
-                                   messages={props.state.dialogsPage.messages}/>}/>
+                                   messages={props.state.dialogsPage.messages}
+                                   newMessageTextBody={props.state.dialogsPage.newMessageTextBody}/>}/>
                     <Route exact path={"/profile"}
                            render={() =>
                                <Profile
