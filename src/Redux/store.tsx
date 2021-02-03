@@ -1,3 +1,7 @@
+import profileReducer, {addPostActionCreator, updateNewPostActionCreator} from "./ProfileReducer";
+import dialogsReducer, {sendMessageCreator, updateNewMessageBodyCreator} from "./DialogsReducer";
+import sidebarReducer from "./SidebarReducer";
+
 export type MessageType = {
     id: number
     message: string
@@ -20,7 +24,7 @@ export type DialogPageType = {
     messages: Array<MessageType>
     newMessageTextBody: string
 }
-type SidebarType = {}
+export type SidebarType = {}
 export type RootStateType = {
     profilePage: ProfilePageType
     dialogsPage: DialogPageType
@@ -73,7 +77,6 @@ let store: StoreType = {
         sidebar: {}
     },
     _callSubscriber() {
-        console.log("change state")
     },
     addPost() {
         let newPost: PostType = {
@@ -98,52 +101,11 @@ let store: StoreType = {
     },
 
     dispatch(action) {
-        if (action.type === "ADD-POST") {
-            let newPost: PostType = {
-                id: new Date().getTime(),
-                message: this._state.profilePage.newPostText,
-                likesCount: 0
-            }
-            this._state.profilePage.posts.push(newPost)
-            this._state.profilePage.newPostText = ""
-            this._callSubscriber();
-        } else if (action.type === "UPDATE-NEW-POST-TEXT") {
-            this._state.profilePage.newPostText = action.newText
-            this._callSubscriber();
-        } else if (action.type === "UPDATE-NEW-MESSAGE-BODY") {
-            this._state.dialogsPage.newMessageTextBody = action.body
-            this._callSubscriber();
-        } else if (action.type === "SEND-MESSAGE") {
-            let body = this._state.dialogsPage.newMessageTextBody
-            this._state.dialogsPage.newMessageTextBody = ""
-            this._state.dialogsPage.messages.push({id: 6, message: body})
-            this._callSubscriber();
-        }
+        this._state.profilePage = profileReducer(this._state.profilePage, action)
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action)
+        this._state.sidebar = sidebarReducer(this._state.sidebar, action)
+        this._callSubscriber();
     }
-}
-
-export const addPostActionCreator = () => {
-    return {
-        type: "ADD-POST"
-    } as const
-
-}
-export const updateNewPostActionCreator = (newText: string) => {
-    return {
-        type: "UPDATE-NEW-POST-TEXT",
-        newText: newText
-    } as const
-}
-export const updateNewMessageBodyCreator = (body: string) => {
-    return {
-        type: "UPDATE-NEW-MESSAGE-BODY",
-        body: body
-    } as const
-}
-export const sendMessageCreator = () => {
-    return {
-        type: "SEND-MESSAGE"
-    } as const
 }
 
 export default store
