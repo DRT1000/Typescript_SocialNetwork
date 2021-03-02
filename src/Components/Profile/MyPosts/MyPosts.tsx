@@ -17,9 +17,6 @@ function MyPosts(props: MyPostsPropsType) {
 
     function onAddPost() {
         props.addPost()
-        // if (newPostElement.current) {
-        //     props.dispatch( addPostActionCreator())
-        // }
     }
 
     const onPostChange = (e: ChangeEvent<HTMLTextAreaElement>) => {

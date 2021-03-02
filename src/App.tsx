@@ -4,15 +4,12 @@ import Header from "./Components/Header/Header";
 import Navbar from "./Components/Navbar/Navbar";
 import Profile from "./Components/Profile/Profile";
 import {BrowserRouter, Route} from "react-router-dom";
-import { StoreType} from "./Redux/store";
+import {StoreType} from "./Redux/store";
 import DialogsContainer from "./Components/Dialogs/DialogsContainer";
+import Users from "./Components/Users/Users";
 
 
-type AppPropsType = {
-    store: StoreType
-}
-
-function App(props: AppPropsType) {
+function App() {
     return (
         <BrowserRouter>
             <div className="app-wrapper">
@@ -21,14 +18,13 @@ function App(props: AppPropsType) {
                 <div className="app-wrapper-content">
                     <Route exact path={"/dialogs"}
                            render={() =>
-                               <DialogsContainer
-                                   store={props.store}
-                                  />}/>
+                               <DialogsContainer/>
+                           }/>
                     <Route exact path={"/profile"}
                            render={() =>
-                               <Profile
-                                   store={props.store}
-                               />}/>
+                               <Profile/>}/>
+                    <Route exact path={"/users"}
+                           render={() => <Users/>}/>
                 </div>
             </div>
         </BrowserRouter>
