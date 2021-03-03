@@ -2,15 +2,15 @@ import profileReducer, {addPostActionCreator, updateNewPostActionCreator} from "
 import dialogsReducer, {sendMessageCreator, updateNewMessageBodyCreator} from "./DialogsReducer";
 import sidebarReducer from "./SidebarReducer";
 
-export type MessageType = {
+ type MessageType = {
     id: number
     message: string
 }
-export type DialogType = {
+ type DialogType = {
     id: number
     name: string
 }
-export type PostType = {
+type PostType = {
     id: number
     message: string
     likesCount: number
@@ -42,9 +42,11 @@ export type StoreType = {
 export type DispatchType={
     dispatch:(action: ActionsTypes) => void
 }
-
-export type ActionsTypes = ReturnType<typeof addPostActionCreator> | ReturnType<typeof updateNewPostActionCreator>
-    | ReturnType<typeof updateNewMessageBodyCreator> | ReturnType<typeof sendMessageCreator>
+type ActionsTypes =
+    ReturnType<typeof addPostActionCreator>
+    | ReturnType<typeof updateNewPostActionCreator>
+    | ReturnType<typeof updateNewMessageBodyCreator>
+    | ReturnType<typeof sendMessageCreator>
 
 
 let store: StoreType = {

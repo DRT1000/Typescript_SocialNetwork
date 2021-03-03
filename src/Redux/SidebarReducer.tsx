@@ -1,4 +1,5 @@
-import {ActionsTypes, RootStateType, SidebarType} from "./store";
+import {SidebarType} from "./store";
+import {ActionsTypes} from "./redux-store";
 
 let initialState={}
 

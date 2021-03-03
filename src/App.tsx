@@ -7,6 +7,7 @@ import {BrowserRouter, Route} from "react-router-dom";
 import {StoreType} from "./Redux/store";
 import DialogsContainer from "./Components/Dialogs/DialogsContainer";
 import Users from "./Components/Users/Users";
+import UsersContainer from "./Components/Users/UsersContainer";
 
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
                            render={() =>
                                <Profile/>}/>
                     <Route exact path={"/users"}
-                           render={() => <Users/>}/>
+                           render={() => <UsersContainer/>}/>
                 </div>
             </div>
         </BrowserRouter>

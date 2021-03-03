@@ -1,5 +1,14 @@
-import {ActionsTypes, DialogPageType} from "./store";
+import {ActionsTypes} from "./redux-store";
 
+export type MessageType = {
+    id: number
+    message: string
+}
+export type DialogType = {
+    id: number
+    name: string
+}
+export type InitialDialogsStateType = typeof initialState
 
 let initialState = {
     dialogs: [
@@ -9,7 +18,7 @@ let initialState = {
         {id: 4, name: "Viktor"},
         {id: 5, name: "Mike"},
         {id: 6, name: "Ron"}
-    ],
+    ] as Array<DialogType>,
     messages: [
         {id: 1, message: "Hi"},
         {id: 2, message: "How are you?"},
@@ -17,15 +26,15 @@ let initialState = {
         {id: 4, message: "Yo"},
         {id: 5, message: "Yo"},
         {id: 6, message: "Yo"}
-    ],
+    ] as Array<MessageType>,
     newMessageTextBody: ""
 }
 
-function dialogsReducer(state: DialogPageType = initialState, action: ActionsTypes) {
+function dialogsReducer(state: InitialDialogsStateType = initialState, action: ActionsTypes):InitialDialogsStateType {
 
     switch (action.type) {
         case "UPDATE-NEW-MESSAGE-BODY":
-            return  {
+            return {
                 ...state,
                 newMessageTextBody: action.body
             }

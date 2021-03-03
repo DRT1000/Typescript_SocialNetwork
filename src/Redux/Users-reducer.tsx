@@ -2,27 +2,21 @@ type LocationType = {
     city: string
     country: string
 }
-type UserType = {
+export type UserType = {
     id: number
     followed: boolean
     fullName: string
     status: string
+    photoURL: string
     location: LocationType
 }
-type InitialStateType = {
+export type InitialStateType = {
     users: Array<UserType>
 }
 const initialState: InitialStateType = {
     users: []
 }
 
-let stateInit = {
-    users: [
-        {id: 1, followed: false, fullName: "Mike", status: "Boss", location: {city: "Minsk", country: "Belarus"}},
-        {id: 2, followed: true, fullName: "Nick", status: "Big Boss", location: {city: "Moscow", country: "Russia"}},
-        {id: 3, followed: false, fullName: "Helen", status: "Small Bass", location: {city: "Kiev", country: "Ukraine"}}
-    ],
-};
 
 export type FollowActionType = {
     type: "FOLLOW"
@@ -39,7 +33,7 @@ export type SetUsersActionType = {
 
 export type ActionsType = FollowActionType | UnFollowActionType | SetUsersActionType
 
-function usersReducer(state: InitialStateType = initialState, action: ActionsType) {
+function usersReducer(state: InitialStateType = initialState, action: ActionsType): InitialStateType {
     switch (action.type) {
         case "FOLLOW":
             return {
