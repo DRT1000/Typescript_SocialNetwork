@@ -4,9 +4,7 @@ import Header from "./Components/Header/Header";
 import Navbar from "./Components/Navbar/Navbar";
 import Profile from "./Components/Profile/Profile";
 import {BrowserRouter, Route} from "react-router-dom";
-import {StoreType} from "./Redux/store";
 import DialogsContainer from "./Components/Dialogs/DialogsContainer";
-import Users from "./Components/Users/Users";
 import UsersContainer from "./Components/Users/UsersContainer";
 
 
