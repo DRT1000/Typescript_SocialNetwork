@@ -2,9 +2,9 @@ type LocationType = {
     city: string
     country: string
 }
-type PhotosType={
-    small:string
-    big:string
+type PhotosType = {
+    small: string
+    big: string
 }
 export type UserType = {
     id: number
@@ -16,9 +16,15 @@ export type UserType = {
 }
 export type InitialStateType = {
     users: Array<UserType>
+    pageSize: number
+    totalUserCount: number
+    currentPage: number
 }
 const initialState: InitialStateType = {
-    users: []
+    users: [],
+    pageSize: 5,
+    totalUserCount: 0,
+    currentPage: 2
 }
 
 
@@ -34,8 +40,21 @@ export type SetUsersActionType = {
     type: "SET-USERS"
     users: Array<UserType>
 }
+export type SetCurrentPage = {
+    type: "SET-CURRENT-PAGE"
+    currentPage: number
+}
+export type SetTotalUserCount = {
+    type: "SET-TOTAL-USER-COUNT"
+    totalUserCount: number
+}
 
-export type ActionsType = FollowActionType | UnFollowActionType | SetUsersActionType
+export type ActionsType =
+    FollowActionType
+    | UnFollowActionType
+    | SetUsersActionType
+    | SetCurrentPage
+    | SetTotalUserCount
 
 function usersReducer(state: InitialStateType = initialState, action: ActionsType): InitialStateType {
     switch (action.type) {
@@ -60,7 +79,11 @@ function usersReducer(state: InitialStateType = initialState, action: ActionsTyp
                 })
             }
         case "SET-USERS":
-            return {...state, users: [...state.users, ...action.users]}
+            return {...state, users: [...action.users]}
+        case "SET-CURRENT-PAGE":
+            return {...state, currentPage: action.currentPage}
+        case "SET-TOTAL-USER-COUNT":
+            return {...state, totalUserCount: action.totalUserCount}
         default:
             return state
     }
@@ -69,6 +92,8 @@ function usersReducer(state: InitialStateType = initialState, action: ActionsTyp
 export const followAC = (userId: number) => ({type: "FOLLOW", userId})
 export const unFollowAC = (userId: number) => ({type: "UNFOLLOW", userId})
 export const setUsersAC = (users: Array<UserType>) => ({type: "SET-USERS", users})
+export const setCurrentPageAC = (currentPage: number) => ({type: "SET-CURRENT-PAGE", currentPage})
+export const totalUserCountAC = (totalUserCount: number) => ({type: "SET-TOTAL-USER-COUNT", totalUserCount})
 
 
 export default usersReducer
