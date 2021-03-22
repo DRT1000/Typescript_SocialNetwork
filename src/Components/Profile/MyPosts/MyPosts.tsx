@@ -7,7 +7,7 @@ import {MyPostsType} from "./MyPostsContainer";
 
 function MyPosts(props: MyPostsType) {
     let postElements = props.profilePage.posts.map(
-        (p) => <Post message={p.message} likesCount={p.likesCount}/>)
+        (p) => <Post key={p.id} message={p.message} likesCount={p.likesCount}/>)
     let newPostElement = React.createRef<HTMLTextAreaElement>()
 
     function onAddPost() {

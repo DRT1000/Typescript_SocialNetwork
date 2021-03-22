@@ -1,4 +1,3 @@
-import {ActionsTypes} from "./redux-store";
 
 export type MessageType = {
     id: number
@@ -8,6 +7,8 @@ export type DialogType = {
     id: number
     name: string
 }
+type ActionsTypes= ReturnType<typeof updateNewMessageBodyCreator> |  ReturnType<typeof sendMessageCreator>
+
 export type InitialDialogsStateType = typeof initialState
 
 let initialState = {
