@@ -23,7 +23,7 @@ function App() {
                            render={() =>
                                <ProfileContainer/>}/>
                     <Route exact path={"/users"}
-                           render={() => <UsersContainer/>}/>
+                           render={() => <UsersContainer />}/>
                 </div>
             </div>
         </BrowserRouter>
