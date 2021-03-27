@@ -3,6 +3,7 @@ import s from "./Dialogs.module.css"
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Messages/Messages";
 import {DialogsPropsType} from "./DialogsContainer";
+import {Redirect} from "react-router-dom"
 
 
 function Dialogs(props: DialogsPropsType) {
@@ -18,6 +19,8 @@ function Dialogs(props: DialogsPropsType) {
         let body = e.currentTarget.value
         props.updateNewMessageBody(body)
     }
+
+    if (!props.isAuth) return <Redirect to={"/login"}/>
     return (
         <div className={s.dialogs}>
             <div className={s.dialogItems}>
