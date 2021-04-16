@@ -1,23 +1,29 @@
 import axios from "axios";
 import {UserType} from "../Redux/Users-reducer";
 
-type ResponseType = {
+type UsersResponseType = {
     items: Array<UserType>
     totalCount: number
     error: string
+}
+
+type ResponseType<T = {}> = {
+    resultCode: number
+    messages: Array<string>
+    data: T
 }
 
 const instance = axios.create({
     withCredentials: true,
     baseURL: `https://social-network.samuraijs.com/api/1.0/`,
     headers: {
-        "API-KEY": "17e1ca4c-bac8-49fa-88f7-542bebb93142"
+        "API-KEY": "18adf875-4ad9-47b2-91e4-b16652e4335e"
     }
 })
 
 export const usersAPI = {
     getUsers(currentPage: number = 1, pageSize: number = 10) {
-        return instance.get<ResponseType>(`users?page=${currentPage}&count=${pageSize}`)
+        return instance.get<UsersResponseType>(`users?page=${currentPage}&count=${pageSize}`)
             .then((res) => {
                 return res.data
             })
@@ -28,8 +34,18 @@ export const usersAPI = {
     unfollow(userId: number) {
         return instance.delete(`follow/${userId}`, {})
     },
-    getProfile(userId: string) {
+    getProfile(userId: number) {
+        debugger
         return instance.get(`profile/` + userId);
+    },
+}
+
+export const profileAPI = {
+    getStatus(userId: number) {
+        return instance.get<string>(`profile/status/${userId}` )
+    },
+    updateStatus(status: string) {
+        return instance.put<ResponseType<string>>(`profile/status`, {status: status})
     }
 }
 

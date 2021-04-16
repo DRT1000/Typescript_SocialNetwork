@@ -2,23 +2,23 @@ import React from "react";
 import s from "./ProfileInfo.module.css"
 import Preloader from "../../Common/Preloader/Preloader";
 import {ProfileType} from "../../../Redux/ProfileReducer";
+import ProfileStatus from "./ProfileStatus";
 
 type ProfileInfoPropsType = {
-    profile: null| ProfileType
+    profile: null | ProfileType
+    status: string
+    updateUserStatus: (status: string) => void
 }
-function ProfileInfo(props:ProfileInfoPropsType) {
-    if (!props.profile){
+
+function ProfileInfo(props: ProfileInfoPropsType) {
+    if (!props.profile) {
         return <Preloader/>
     }
     return (
         <div>
-            {/*<div>*/}
-            {/*    <img*/}
-            {/*        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDB4r0Jio5vMx8xr6Adx4jdiUkvChSWEgFcA&usqp=CAU"/>*/}
-            {/*</div>*/}
             <div className={s.description}>
                 <img src={props.profile ? props.profile.photos.large : ''}/>
-                ava+description
+                <ProfileStatus status={props.status} updateStatus={props.updateUserStatus}/>
             </div>
         </div>
     )
