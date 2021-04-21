@@ -1,9 +1,8 @@
-import {SidebarType} from "./store";
+type SidebarType = {}
+type ActionsTypes = {}
+let initialState = {}
 
-type ActionsTypes={}
-let initialState={}
-
-function sidebarReducer(state:SidebarType=initialState,action:ActionsTypes){
+function sidebarReducer(state: SidebarType = initialState, action: ActionsTypes) {
     return state
 }
 
