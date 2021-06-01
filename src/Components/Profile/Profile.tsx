@@ -1,19 +1,27 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import MyPostsContainer from "./MyPosts/MyPostsContainer";
-import {ProfileType} from "../../Redux/ProfileReducer";
+import {useDispatch} from "react-redux";
+import {useParams} from "react-router-dom";
+import {getUserProfile, getUserStatus} from "../../Redux/ProfileReducer";
+import MyPosts from "./MyPosts/MyPosts";
 
-type ProfilePropsType = {
-    profile: null | ProfileType
-    status: string
-    updateUserStatus: (status: string) => void
-}
 
-function Profile(props: ProfilePropsType) {
+function Profile() {
+    const dispatch = useDispatch()
+    const {id} = useParams<{ id: string }>()
+
+    useEffect(() => {
+        let userId = id
+        if (!userId) {
+            userId = '2'
+        }
+        dispatch(getUserProfile(+userId))
+        dispatch(getUserStatus(+userId))
+    },[])
     return (
         <div>
-            <ProfileInfo profile={props.profile} status={props.status} updateUserStatus={props.updateUserStatus}/>
-            <MyPostsContainer/>
+            <ProfileInfo />
+            <MyPosts/>
         </div>
     )
 }

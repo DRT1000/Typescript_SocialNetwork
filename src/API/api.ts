@@ -35,7 +35,6 @@ export const usersAPI = {
         return instance.delete(`follow/${userId}`, {})
     },
     getProfile(userId: number) {
-        debugger
         return instance.get(`profile/` + userId);
     },
 }

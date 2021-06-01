@@ -1,57 +1,68 @@
-import React from "react";
+import React, {useCallback, useEffect} from "react";
 import styles from "./users.module.css";
 import userPhoto from "../../asserts/images/user.png";
-import {InitialStateType} from "../../Redux/Users-reducer";
+import {follow, getUsers, InitialUserStateType, unfollow} from "../../Redux/Users-reducer";
 import {NavLink} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "../../Redux/redux-store";
+import Preloader from "../Common/Preloader/Preloader";
 
-type PropsType = {
-    usersPage: InitialStateType
-    pageSize: number
-    totalUserCount: number
-    currentPage: number
-    onPageChange: (p: number) => void
-    follow: (userId: number) => void
-    unfollow: (userId: number) => void
-    followingInProgress: Array<number>
-}
 
-let Users = (props: PropsType) => {
-    let pageCount = Math.ceil(props.totalUserCount / props.pageSize)
+let Users = () => {
+
+    const users = useSelector<AppStateType, InitialUserStateType>(state => state.users)
+    const dispatch = useDispatch()
+
+
+    useEffect(() => {
+        dispatch(getUsers(users.currentPage, users.pageSize))
+    }, [])
+
+    const onPageChange = useCallback((pageNumber: number) => {
+        dispatch(getUsers(pageNumber, users.pageSize))
+    }, [dispatch])
+
+    let pageCount = Math.ceil(users.totalUserCount / users.pageSize)
     let pages = []
     for (let i = 1; i <= pageCount; i++) {
         pages.push(i)
     }
 
-    return <div>
-        <div>
-            {pages.map(p => {
-                return <span key={p} onClick={() => props.onPageChange(p)}
-                             className={props.currentPage === p ? styles.selectedPage : ""}>{p}</span>
-            })}
-        </div>
-        {
-            props.usersPage.users.map(u => <div key={u.id}>
+    return (
+        <React.Fragment>
+            {users.isFetching ? <Preloader/> : null}
+            <div>
+                {pages.map(p => {
+                    return <span key={p} onClick={() => onPageChange(p)}
+                                 className={users.currentPage === p ? styles.selectedPage : ""}>{p}</span>
+                })}
+            </div>
+            {
+                users.users.map(u => <div key={u.id}>
                 <span>
                     <div>
-                        <NavLink to={'/profile/' + u.id}>
-                        <img src={u.photos.small !== null ? u.photos.small : userPhoto} className={styles.usersPhoto}/>
+                        <NavLink to={`/profile/${u.id}`}>
+                        <img
+                            src={u.photos.small !== null ? u.photos.small : userPhoto}
+                            className={styles.usersPhoto}
+                        />
                    </NavLink>
                     </div>
                     <div>
                         {u.followed
-                            ? <button disabled={props.followingInProgress.some(id => id === u.id)}
+                            ? <button disabled={users.followingInProgress.some(id => id === u.id)}
                                       onClick={() => {
-                                          props.unfollow(u.id)
+                                          dispatch(unfollow(u.id))
                                       }}
                             >UnFollow</button>
-                            : <button disabled={props.followingInProgress.some(id => id === u.id)}
+                            : <button disabled={users.followingInProgress.some(id => id === u.id)}
                                       onClick={() => {
-                                          props.follow(u.id)
+                                          dispatch(follow(u.id))
                                       }}
                             >Follow</button>}
                     </div>
                 </span>
-                    <span>
+                        <span>
                     <span>
                         <div>{u.name}</div>
                         <div>{u.status}</div>
@@ -61,10 +72,11 @@ let Users = (props: PropsType) => {
                         <div>{'u.location.city'}</div>
                     </span>
                 </span>
-                </div>
-            )
-        }
-    </div>
+                    </div>
+                )
+            }
+        </React.Fragment>
+    )
 }
 
 

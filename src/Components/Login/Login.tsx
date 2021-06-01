@@ -35,8 +35,8 @@ const Login = () => {
         <div>
             <h1 className={s.title}>Login</h1>
             <form onSubmit={formik.handleSubmit} className={s.form}>
-                <label htmlFor="login">Login</label>
                 <input
+                    placeholder="email"
                     id="email"
                     type="email"
                     {...formik.getFieldProps('email')}
@@ -44,8 +44,8 @@ const Login = () => {
                 {formik.touched.email && formik.errors.email
                     ? <div style={{color: 'red'}}>{formik.errors.email}</div>
                     : null}
-                <label htmlFor="password">Password</label>
                 <input
+                    placeholder="password"
                     id="password"
                     type="password"
                     onChange={formik.handleChange}

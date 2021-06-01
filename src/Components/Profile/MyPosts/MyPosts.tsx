@@ -1,17 +1,19 @@
 import React from "react";
 import s from "./MyPosts.module.css"
 import Post from "./Post/Post";
-import {MyPostsType} from "./MyPostsContainer";
 import {useFormik} from "formik";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "../../../Redux/redux-store";
+import {addPost, InitialStateProfileType} from "../../../Redux/ProfileReducer";
 
 type FormikErrorType = {
     newPostText?: string
 }
 
-function MyPosts(props: MyPostsType) {
-    let postElements = props.profilePage.posts.map(
-        (p) => <Post key={p.id} message={p.message} likesCount={p.likesCount}/>)
+function MyPosts() {
 
+    const dispatch = useDispatch()
+    const {posts} = useSelector<AppStateType, InitialStateProfileType>(state => state.profilePage)
 
     const formik = useFormik({
         initialValues: {
@@ -28,7 +30,7 @@ function MyPosts(props: MyPostsType) {
         },
         onSubmit: values => {
             alert(JSON.stringify(values, null, 2));
-            props.addPost(formik.values.newPostText)
+            dispatch(addPost(formik.values.newPostText))
             formik.resetForm()
         },
     })
@@ -54,7 +56,7 @@ function MyPosts(props: MyPostsType) {
                 </form>
             </div>
             <div className={s.posts}>
-                {postElements}
+                {posts.map(p => <Post key={p.id} message={p.message} likesCount={p.likesCount}/>)}
             </div>
         </div>
     )

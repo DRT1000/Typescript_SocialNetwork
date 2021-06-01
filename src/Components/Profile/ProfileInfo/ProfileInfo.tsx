@@ -1,24 +1,26 @@
 import React from "react";
 import s from "./ProfileInfo.module.css"
 import Preloader from "../../Common/Preloader/Preloader";
-import {ProfileType} from "../../../Redux/ProfileReducer";
+import {InitialStateProfileType} from "../../../Redux/ProfileReducer";
 import ProfileStatus from "./ProfileStatus";
+import {useSelector} from "react-redux";
+import {AppStateType} from "../../../Redux/redux-store";
 
-type ProfileInfoPropsType = {
-    profile: null | ProfileType
-    status: string
-    updateUserStatus: (status: string) => void
-}
 
-function ProfileInfo(props: ProfileInfoPropsType) {
-    if (!props.profile) {
+
+function ProfileInfo() {
+    const {profile, status} = useSelector<AppStateType, InitialStateProfileType>(state => state.profilePage)
+
+    if (!profile) {
+        debugger
         return <Preloader/>
     }
+
     return (
         <div>
             <div className={s.description}>
-                <img src={props.profile ? props.profile.photos.large : ''}/>
-                <ProfileStatus status={props.status} updateStatus={props.updateUserStatus}/>
+                <img src={profile ? profile.photos.large : ''}/>
+                <ProfileStatus status={status} />
             </div>
         </div>
     )

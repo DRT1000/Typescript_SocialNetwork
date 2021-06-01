@@ -2,17 +2,16 @@ import React from "react";
 import s from "./Dialogs.module.css"
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Messages/Messages";
-import {DialogsPropsType} from "./DialogsContainer";
 import {useFormik} from "formik";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "../../Redux/redux-store";
+import {InitialDialogsStateType, sendMessageCreator} from "../../Redux/DialogsReducer";
 
-function Dialogs(props: DialogsPropsType) {
+function Dialogs() {
 
-    let dialogElements = props.dialogsPage.dialogs.map((d) => <DialogItem name={d.name} key={d.id} id={d.id}/>)
-    let messagesElements = props.dialogsPage.messages.map((m) => <Message message={m.message} key={m.id} id={m.id}/>)
+    const dispatch = useDispatch()
+    const {dialogs,messages} = useSelector<AppStateType, InitialDialogsStateType>(state => state.dialogsPage)
 
-    let addNewMessage = (values: string) => {
-        props.sendMessage(values)
-    }
 
     const formik = useFormik({
         initialValues: {
@@ -20,17 +19,18 @@ function Dialogs(props: DialogsPropsType) {
         },
         onSubmit: values => {
             alert(JSON.stringify(values, null, 2));
-            addNewMessage(formik.values.newMessage)
+            dispatch(sendMessageCreator(formik.values.newMessage))
             formik.resetForm()
         },
     })
+
     return (
         <div className={s.dialogs}>
             <div className={s.dialogItems}>
-                {dialogElements}
+                {dialogs.map(d=><DialogItem name={d.name} key={d.id} id={d.id}/>)}
             </div>
             <div className={s.messages}>
-                <div>{messagesElements}</div>
+                <div>{messages.map(m=><Message message={m.message} key={m.id} id={m.id}/>)}</div>
                 <form onSubmit={formik.handleSubmit}>
                     <textarea
                         id="newMessage"
